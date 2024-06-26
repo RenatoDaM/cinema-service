@@ -6,3 +6,5 @@ pluginManagement {
 	}
 }
 rootProject.name = 'service'
+include 'simple-storage-provider'
+include 'core'
