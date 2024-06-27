@@ -1,4 +1,4 @@
-package com.cinema.adapter;
+package com.cinema;
 
 import com.cinema.service.domain.ImageProvider;
 import org.springframework.stereotype.Component;
