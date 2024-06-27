@@ -1,6 +1,6 @@
-package com.cinema.bibi;
+package com.cinema.image.impl;
 
-import com.cinema.ImageProvider;
+import com.cinema.image.ImageProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;

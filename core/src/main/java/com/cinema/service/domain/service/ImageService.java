@@ -1,6 +1,6 @@
 package com.cinema.service.domain.service;
 
-import com.cinema.ImageProvider;
+import com.cinema.image.ImageProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
@@ -9,7 +9,7 @@ import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor
-@ComponentScan(basePackages = {"com.cinema.bibi"})
+@ComponentScan(basePackages = {"com.cinema.image.impl"})
 public class ImageService {
     private final ImageProvider imageProvider;
 
