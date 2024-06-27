@@ -1,6 +1,7 @@
-package com.cinema.service.domain;
+package com.cinema;
 
 import org.springframework.web.multipart.MultipartFile;
+
 import java.io.IOException;
 
 public interface ImageProvider {

@@ -1,6 +1,7 @@
-package com.cinema;
+package com.cinema.bibi;
 
-import com.cinema.service.domain.ImageProvider;
+import com.cinema.ImageProvider;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
@@ -10,6 +11,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.UUID;
 
 @Component
+@ConditionalOnProperty(name = "cinema.image-provider", havingValue = "local-disk")
 public class DiskStorageImageProvider implements ImageProvider {
     @Override
     public String saveImage(String uploadDirectory, MultipartFile imageFile) throws IOException {

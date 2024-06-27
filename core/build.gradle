@@ -1,4 +1,6 @@
 dependencies {
+    implementation(project(":disk-storage-image-provider"))
+    implementation(project(":common-interfaces"))
     implementation 'org.springframework.boot:spring-boot-starter-amqp'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
