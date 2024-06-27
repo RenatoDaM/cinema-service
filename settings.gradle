@@ -5,6 +5,8 @@ pluginManagement {
 		gradlePluginPortal()
 	}
 }
-rootProject.name = 'service'
-include 'simple-storage-provider'
+rootProject.name = 'cinema-service'
 include 'core'
+include 'simple-storage-image-provider'
+include 'imgur-image-provider'
+include 'disk-storage-image-provider'

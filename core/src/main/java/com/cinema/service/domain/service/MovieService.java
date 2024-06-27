@@ -7,14 +7,12 @@ import com.cinema.service.rest.dto.request.MovieCreateRequest;
 import com.cinema.service.rest.dto.response.MovieListResponse;
 import com.cinema.service.rest.dto.response.MovieResponse;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -37,7 +35,7 @@ public class MovieService {
                 .orElseThrow();
         String adsImagesString = "";
         for (MultipartFile imageFile : movieImage) {
-            adsImagesString += imageService.saveImageToStorage(movieImagesPath, imageFile);
+            adsImagesString += imageService.saveImage(movieImagesPath, imageFile);
         }
         movieEntity.setImagePath(adsImagesString);
         movieRepository.save(movieEntity);
