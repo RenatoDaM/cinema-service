@@ -20,6 +20,7 @@ server:
   port: 8081
 
 cinema:
+  image-provider: "local-disk"
   max-session-hours: 5
   min-session-minutes: 10
   movie-image-upload-directory: "src/main/resources/static/images/movies/"

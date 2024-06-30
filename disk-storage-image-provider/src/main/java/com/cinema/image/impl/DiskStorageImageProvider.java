@@ -1,6 +1,8 @@
-package com.cinema.service.domain.service;
+package com.cinema.image.impl;
 
-import org.springframework.stereotype.Service;
+import com.cinema.image.ImageProvider;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -8,9 +10,11 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.UUID;
 
-@Service
-public class ImageService {
-    public String saveImageToStorage(String uploadDirectory, MultipartFile imageFile) throws IOException {
+@Component
+@ConditionalOnProperty(name = "cinema.image-provider", havingValue = "local-disk")
+public class DiskStorageImageProvider implements ImageProvider {
+    @Override
+    public String saveImage(String uploadDirectory, MultipartFile imageFile) throws IOException {
         String uniqueFileName = UUID.randomUUID() + "_" + imageFile.getOriginalFilename();
 
         Path uploadPath = Path.of(uploadDirectory);
@@ -43,7 +47,7 @@ public class ImageService {
             Files.delete(imagePath);
             return "Success";
         } else {
-            return "Failed"; // Handle missing images
+            return "Failed";
         }
     }
 }

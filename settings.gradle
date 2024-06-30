@@ -5,4 +5,8 @@ pluginManagement {
 		gradlePluginPortal()
 	}
 }
+
 rootProject.name = 'service'
+include 'core'
+include 'disk-storage-image-provider'
+include 'common'
