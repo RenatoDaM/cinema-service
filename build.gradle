@@ -74,9 +74,5 @@ bootJar {
     launchScript {
         properties 'spring.profiles.active': 'prod'
     }
-}
-
-bootJar {
     enabled = false
 }
-

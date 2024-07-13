@@ -7,7 +7,7 @@
 
 # How to run?
 First, you will need to start the docker images by running **docker-compose up** at the root directory. This command will start two containers, PostgreSQL and RabbitMQ.
-After that, you are good to go, just start by your IDE or run **./gradlew bootRun** at root directory.
+After that, you are good to go, just start by your IDE or run **./gradlew :core:bootRun** at root directory.
 ![img.png](./readme-images/spring-start-example.png)
 
 ### Common beginners errors for Windows users
