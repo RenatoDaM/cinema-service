@@ -2,7 +2,7 @@
 - Docker
 - Docker Compose (comes with docker desktop for Windows users)
 - Java 21 (For **Windows users** if your IDE doesn't manage JDK versions, maybe you will need to change manually by environment variables JAVA_HOME or Path), like the example below:
-![img.png](./readme-images/environment-variables-example.png), more information: https://www.happycoders.eu/java/how-to-switch-multiple-java-versions-windows/
+![img.png](./docs/readme-images/environment-variables-example.png), more information: https://www.happycoders.eu/java/how-to-switch-multiple-java-versions-windows/
 - Gradle (maybe your IDE has already installed it for you)
 
 # How to run?

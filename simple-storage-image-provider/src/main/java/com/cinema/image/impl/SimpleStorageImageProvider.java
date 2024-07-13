@@ -1,5 +1,6 @@
 package com.cinema.image.impl;
 
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.cinema.image.ImageProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
@@ -9,23 +10,25 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.UUID;
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.s3.AmazonS3;
 
 @Component
 @ConditionalOnProperty(name = "cinema.image-provider", havingValue = "simple-storage")
 public class SimpleStorageImageProvider implements ImageProvider {
+
+    final AmazonS3 s3 = AmazonS3ClientBuilder.standard().withRegion(Regions.DEFAULT_REGION).build();
+
+
     @Override
     public String saveImage(String uploadDirectory, MultipartFile imageFile) throws IOException {
-        String uniqueFileName = UUID.randomUUID() + "_" + imageFile.getOriginalFilename();
-
-        Path uploadPath = Path.of(uploadDirectory);
-        Path filePath = uploadPath.resolve(uniqueFileName);
-
-        if (!Files.exists(uploadPath)) {
-            Files.createDirectories(uploadPath);
+        try {
+            s3.putObject(bucket_name, key_name, new File(file_path));
+        } catch (AmazonServiceException e) {
+            System.err.println(e.getErrorMessage());
+            System.exit(1);
         }
-
-        Files.copy(imageFile.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-
         return uniqueFileName;
     }
 
