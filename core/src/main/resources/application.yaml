@@ -1,4 +1,5 @@
 spring:
+
   profiles:
     active: dev
   rabbitmq:
@@ -12,6 +13,11 @@ spring:
           max-interval: 10000ms
       simple:
         default-requeue-rejected: false
+  config:
+    import:
+      - "aws-secretsmanager:cinema-service/secrets/"
+
+    location: us-east-2
   liquibase:
     enabled: true
     change-log: classpath:/config/liquibase/changelog.xml
@@ -20,7 +26,9 @@ server:
   port: 8081
 
 cinema:
-  image-provider: "local-disk"
+  image-provider: "simple-storage"
   max-session-hours: 5
   min-session-minutes: 10
   movie-image-upload-directory: "src/main/resources/static/images/movies/"
+  s3-bucket-name:
+  s3-key:

@@ -8,6 +8,7 @@ version = '0.0.1-SNAPSHOT'
 dependencies {
     implementation(project(":common"))
     implementation 'com.amazonaws:aws-java-sdk-s3:1.12.760'
+    implementation 'software.amazon.awssdk:s3:2.24.9'
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
 }

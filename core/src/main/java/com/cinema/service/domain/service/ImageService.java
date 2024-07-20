@@ -11,6 +11,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 @ComponentScan(basePackages = {"com.cinema.image.impl"})
 public class ImageService {
+
     private final ImageProvider imageProvider;
 
     public String saveImage(String uploadDirectory, MultipartFile imageFile) throws IOException {
