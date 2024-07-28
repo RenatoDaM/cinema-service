@@ -17,4 +17,8 @@ public class ImageService {
     public String saveImage(String uploadDirectory, MultipartFile imageFile) throws IOException {
         return imageProvider.saveImage(uploadDirectory, imageFile);
     }
+
+    public byte[] getImage(String imageIdentifier) throws IOException {
+        return imageProvider.getImage(imageIdentifier);
+    }
 }

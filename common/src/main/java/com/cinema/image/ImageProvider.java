@@ -6,4 +6,6 @@ import java.io.IOException;
 
 public interface ImageProvider {
     String saveImage(String uploadDirectory, MultipartFile imageFile) throws IOException;
+
+    byte[] getImage(String imageIdentifier) throws IOException;
 }
