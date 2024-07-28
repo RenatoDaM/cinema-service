@@ -18,6 +18,9 @@ public class S3Configuration {
     @Value("${api-secretkey}")
     private String secretKey;
 
+    @Value("${cinema.aws-region}")
+    private String awsRegion;
+
     @Bean
     public AmazonS3 amazonS3() {
 
@@ -29,7 +32,7 @@ public class S3Configuration {
         return AmazonS3ClientBuilder
                 .standard()
                 .withCredentials(new AWSStaticCredentialsProvider(credentials))
-                .withRegion(Regions.US_EAST_2)
+                .withRegion(Regions.valueOf(awsRegion))
                 .build();
     }
 }

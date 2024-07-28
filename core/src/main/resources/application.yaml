@@ -26,9 +26,9 @@ server:
   port: 8081
 
 cinema:
-  image-provider: "simple-storage"
   max-session-hours: 5
   min-session-minutes: 10
-  movie-image-upload-directory: "src/main/resources/static/images/movies/"
-  s3-bucket-name:
-  s3-key:
+  image-provider: "simple-storage"
+  movie-image-upload-directory: "core/src/main/resources/static/images/movies/"
+  s3-bucket-name: "cinema-service-movie-images"
+  aws-region: "US_EAST_2"

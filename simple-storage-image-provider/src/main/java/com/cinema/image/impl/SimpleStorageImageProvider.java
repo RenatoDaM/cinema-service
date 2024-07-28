@@ -6,6 +6,7 @@ import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.cinema.image.ImageProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
@@ -25,7 +26,8 @@ public class SimpleStorageImageProvider implements ImageProvider {
 
     private final AmazonS3 s3;
 
-    public final String BUCKET_NAME = "cinema-service-movie-images";
+    @Value("${cinema.s3-bucket-name}")
+    public String BUCKET_NAME;
 
     // save as jfif for some reason, probably because the conversion from multipartfile
     @Override
