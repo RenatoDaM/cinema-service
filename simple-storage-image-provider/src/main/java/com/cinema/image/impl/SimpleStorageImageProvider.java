@@ -32,7 +32,6 @@ public class SimpleStorageImageProvider implements ImageProvider {
     // save as jfif for some reason, probably because the conversion from multipartfile
     @Override
     public String saveImage(String imageIdentifier, MultipartFile imageFile) throws IOException {
-
         try {
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentLength(imageFile.getSize());
@@ -47,7 +46,7 @@ public class SimpleStorageImageProvider implements ImageProvider {
         return imageIdentifier;
     }
 
-    public byte[] getImage(String imageIdentifier) throws IOException {
+    public byte[] getImage(String imageIdentifier) {
         byte[] imageBytes = null;
         try {
             S3Object s3Object = s3.getObject(BUCKET_NAME, imageIdentifier);

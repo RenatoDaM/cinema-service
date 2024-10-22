@@ -1,6 +1,7 @@
 package com.cinema.service.rest.error.handler;
 
 import com.cinema.service.rest.error.ErrorResponse;
+import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,18 @@ public class RestResponseControllerAdvice {
                         HttpStatus.BAD_REQUEST.value(),
                         ex.getLocalizedMessage(),
                         null
+                );
+        return ResponseEntity.badRequest().body(error);
+    }
+
+    @ExceptionHandler(value = {FileUploadException.class})
+    protected ResponseEntity<Object> handleFileUploadException(FileUploadException ex, WebRequest request) {
+        ErrorResponse error =
+                new ErrorResponse(
+                        LocalDateTime.now(),
+                        HttpStatus.BAD_REQUEST.value(),
+                        "File upload failed",
+                        List.of(ex.getLocalizedMessage())
                 );
         return ResponseEntity.badRequest().body(error);
     }

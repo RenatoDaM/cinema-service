@@ -7,6 +7,7 @@ import com.cinema.service.rest.dto.request.MovieCreateRequest;
 import com.cinema.service.rest.dto.response.MovieListResponse;
 import com.cinema.service.rest.dto.response.MovieResponse;
 import lombok.RequiredArgsConstructor;
+import org.apache.tika.exception.TikaException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;

@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
+import static com.cinema.service.domain.util.MultipartFileValidator.validateImage;
+
 @Service
 @RequiredArgsConstructor
 @ComponentScan(basePackages = {"com.cinema.image.impl"})
@@ -15,6 +17,7 @@ public class ImageService {
     private final ImageProvider imageProvider;
 
     public String saveImage(String uploadDirectory, MultipartFile imageFile) throws IOException {
+        validateImage(imageFile);
         return imageProvider.saveImage(uploadDirectory, imageFile);
     }
 
