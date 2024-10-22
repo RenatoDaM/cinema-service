@@ -7,10 +7,10 @@ import com.cinema.service.rest.dto.request.MovieCreateRequest;
 import com.cinema.service.rest.dto.response.MovieListResponse;
 import com.cinema.service.rest.dto.response.MovieResponse;
 import lombok.RequiredArgsConstructor;
-import org.apache.tika.exception.TikaException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.UUID;
@@ -30,7 +30,13 @@ public class MovieService {
     public void saveMovieImage(MultipartFile[] movieImage, Long movieId) throws IOException {
         var movieEntity = movieRepository.findById(movieId)
                 .orElseThrow();
-        String imageIdentifier = UUID.randomUUID().toString();
+
+        String imageIdentifier = movieEntity.getImagePath();
+
+        if (movieEntity.getImagePath() == null) {
+             imageIdentifier = UUID.randomUUID().toString();
+        }
+
         for (MultipartFile imageFile : movieImage) {
             imageService.saveImage(imageIdentifier, imageFile);
         }
@@ -52,5 +58,14 @@ public class MovieService {
         Movie movieEntity = movieRepository.findById(id).orElseThrow(() ->
                 new IllegalArgumentException("Movie with id: " + id + " not found"));
             return MovieMapper.INSTANCE.toDto(movieEntity);
+    }
+
+    @Transactional
+    public void deleteMovie(Long id) throws IOException {
+        Movie movie = movieRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Movie with id: " + id + " not found"));
+
+        movieRepository.deleteById(id);
+        imageService.deleteImage(movie.getImagePath());
     }
 }

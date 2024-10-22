@@ -66,4 +66,12 @@ public class MovieController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(movieService.findById(movieId));
     }
+
+    @DeleteMapping("/{movieId}")
+    public ResponseEntity<Void> deleteMovie(
+            @PathVariable Long movieId
+    ) throws IOException {
+        movieService.deleteMovie(movieId);
+        return ResponseEntity.noContent().build();
+    }
 }

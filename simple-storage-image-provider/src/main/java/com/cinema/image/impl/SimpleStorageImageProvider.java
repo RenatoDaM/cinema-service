@@ -11,10 +11,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
 
@@ -67,14 +64,7 @@ public class SimpleStorageImageProvider implements ImageProvider {
         return imageBytes;
     }
 
-    public String deleteImage(String imageDirectory, String imageName) throws IOException {
-        Path imagePath = Path.of(imageDirectory, imageName);
-
-        if (Files.exists(imagePath)) {
-            Files.delete(imagePath);
-            return "Success";
-        } else {
-            return "Failed";
-        }
+    public void deleteImage(String imageIdentifier) throws IOException {
+        s3.deleteObject(BUCKET_NAME, imageIdentifier);
     }
 }

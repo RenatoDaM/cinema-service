@@ -8,4 +8,6 @@ public interface ImageProvider {
     String saveImage(String uploadDirectory, MultipartFile imageFile) throws IOException;
 
     byte[] getImage(String imageIdentifier) throws IOException;
+
+    void deleteImage(String imageIdentifier) throws IOException;
 }

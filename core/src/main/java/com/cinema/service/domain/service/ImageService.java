@@ -24,4 +24,8 @@ public class ImageService {
     public byte[] getImage(String imageIdentifier) throws IOException {
         return imageProvider.getImage(imageIdentifier);
     }
+
+    public void deleteImage(String imageIdentifier) throws IOException {
+        imageProvider.deleteImage(imageIdentifier);
+    }
 }

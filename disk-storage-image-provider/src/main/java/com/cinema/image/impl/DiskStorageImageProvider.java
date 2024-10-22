@@ -42,14 +42,8 @@ public class DiskStorageImageProvider implements ImageProvider {
         }
     }
 
-    public String deleteImage(String imageDirectory, String imageName) throws IOException {
-        Path imagePath = Path.of(imageDirectory, imageName);
-
-        if (Files.exists(imagePath)) {
-            Files.delete(imagePath);
-            return "Success";
-        } else {
-            return "Failed";
-        }
+    public void deleteImage(String imageIdentifier) throws IOException {
+        Path imagePath = Path.of(imageIdentifier);
+        Files.delete(imagePath);
     }
 }
