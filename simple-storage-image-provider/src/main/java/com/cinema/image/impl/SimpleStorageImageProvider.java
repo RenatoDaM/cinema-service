@@ -7,8 +7,6 @@ import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.cinema.exception.MovieImageNotFoundException;
 import com.cinema.image.ImageProvider;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.ComponentScan;
@@ -26,25 +24,16 @@ public class SimpleStorageImageProvider implements ImageProvider {
 
     private final AmazonS3 s3;
 
-    private static final Logger log = LoggerFactory.getLogger(SimpleStorageImageProvider.class);
-
     @Value("${cinema.s3-bucket-name}")
     public String BUCKET_NAME;
 
     // save as jfif for some reason, probably because the conversion from multipartfile
     @Override
     public String saveImage(String imageIdentifier, MultipartFile imageFile) throws IOException {
-        try {
-            ObjectMetadata metadata = new ObjectMetadata();
-            metadata.setContentLength(imageFile.getSize());
-            metadata.setContentType(imageFile.getContentType());
-
-            s3.putObject(BUCKET_NAME, imageIdentifier, imageFile.getInputStream(), metadata);
-        } catch (AmazonServiceException e) {
-            System.err.println(e.getErrorMessage());
-            throw new IOException("Error occurred while trying to save movie image on S3", e);
-        }
-
+        ObjectMetadata metadata = new ObjectMetadata();
+        metadata.setContentLength(imageFile.getSize());
+        metadata.setContentType(imageFile.getContentType());
+        s3.putObject(BUCKET_NAME, imageIdentifier, imageFile.getInputStream(), metadata);
         return imageIdentifier;
     }
 

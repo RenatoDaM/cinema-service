@@ -6,7 +6,10 @@ import com.cinema.service.domain.repository.MovieRepository;
 import com.cinema.service.rest.dto.request.MovieCreateRequest;
 import com.cinema.service.rest.dto.response.MovieListResponse;
 import com.cinema.service.rest.dto.response.MovieResponse;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -21,6 +24,10 @@ public class MovieService {
     public final MovieRepository movieRepository;
 
     private final ImageService imageService;
+
+    public final ObjectMapper objectMapper;
+
+    private final Logger log = LoggerFactory.getLogger(MovieService.class);
 
     public MovieResponse create(MovieCreateRequest movieCreateRequest) {
         var movieEntity = MovieMapper.INSTANCE.fromCreateRequest(movieCreateRequest);
@@ -66,6 +73,7 @@ public class MovieService {
                 .orElseThrow(() -> new IllegalArgumentException("Movie with id: " + id + " not found"));
 
         movieRepository.deleteById(id);
+        log.info("Movie with ID {} was deleted: {}", movie.getId(), objectMapper.writeValueAsString(movie));
         imageService.deleteImage(movie.getImagePath());
     }
 }

@@ -4,7 +4,6 @@ import com.cinema.service.rest.dto.request.MovieCreateRequest;
 import com.cinema.service.rest.dto.response.MovieListResponse;
 import com.cinema.service.domain.service.MovieService;
 import com.cinema.service.rest.dto.response.MovieResponse;
-import org.apache.tika.exception.TikaException;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +17,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
 import java.io.IOException;
+import java.net.URI;
 
 @RestController
 @RequiredArgsConstructor
@@ -29,7 +31,7 @@ public class MovieController {
     private final MovieService movieService;
 
     @GetMapping(
-            value = "/get-image/{movieId}",
+            value = "/{movieId}/image",
             produces = MediaType.IMAGE_JPEG_VALUE
     )
     public @ResponseBody byte[] getMovieImage(@PathVariable Long movieId) throws IOException {
@@ -47,9 +49,15 @@ public class MovieController {
     public ResponseEntity<Void> saveMovieImage(
             @RequestBody MultipartFile[] movieImage,
             @PathVariable Long movieId
-    ) throws IOException, TikaException {
+    ) throws IOException {
         movieService.saveMovieImage(movieImage, movieId);
-        return ResponseEntity.ok().build();
+
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/image")
+                .buildAndExpand(movieId)
+                .toUri();
+
+        return ResponseEntity.created(location).build();
     }
 
     @GetMapping
