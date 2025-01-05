@@ -6,24 +6,28 @@ import com.cinema.service.domain.repository.MovieRepository;
 import com.cinema.service.rest.dto.request.MovieCreateRequest;
 import com.cinema.service.rest.dto.response.MovieListResponse;
 import com.cinema.service.rest.dto.response.MovieResponse;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class MovieService {
     public final MovieRepository movieRepository;
-    @Value("${cinema.movie-image-upload-directory}")
-    private String movieImagesPath;
+
     private final ImageService imageService;
+
+    public final ObjectMapper objectMapper;
+
+    private final Logger log = LoggerFactory.getLogger(MovieService.class);
 
     public MovieResponse create(MovieCreateRequest movieCreateRequest) {
         var movieEntity = MovieMapper.INSTANCE.fromCreateRequest(movieCreateRequest);
@@ -33,11 +37,17 @@ public class MovieService {
     public void saveMovieImage(MultipartFile[] movieImage, Long movieId) throws IOException {
         var movieEntity = movieRepository.findById(movieId)
                 .orElseThrow();
-        String adsImagesString = "";
-        for (MultipartFile imageFile : movieImage) {
-            adsImagesString += imageService.saveImage(movieImagesPath, imageFile);
+
+        String imageIdentifier = movieEntity.getImagePath();
+
+        if (movieEntity.getImagePath() == null) {
+             imageIdentifier = UUID.randomUUID().toString();
         }
-        movieEntity.setImagePath(adsImagesString);
+
+        for (MultipartFile imageFile : movieImage) {
+            imageService.saveImage(imageIdentifier, imageFile);
+        }
+        movieEntity.setImagePath(imageIdentifier);
         movieRepository.save(movieEntity);
     }
 
@@ -47,15 +57,23 @@ public class MovieService {
     }
 
     public byte[] getMovieImage(Long movieId) throws IOException {
-        String path = findById(movieId).getImagePath();
-        Path imagePath = Paths.get(movieImagesPath, path);
-
-        return Files.readAllBytes(imagePath);
+        String imageIdentifier = findById(movieId).getImagePath();
+        return imageService.getImage(imageIdentifier);
     }
 
     public MovieResponse findById(Long id) {
         Movie movieEntity = movieRepository.findById(id).orElseThrow(() ->
                 new IllegalArgumentException("Movie with id: " + id + " not found"));
             return MovieMapper.INSTANCE.toDto(movieEntity);
+    }
+
+    @Transactional
+    public void deleteMovie(Long id) throws IOException {
+        Movie movie = movieRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Movie with id: " + id + " not found"));
+
+        movieRepository.deleteById(id);
+        log.info("Movie with ID {} was deleted: {}", movie.getId(), objectMapper.writeValueAsString(movie));
+        imageService.deleteImage(movie.getImagePath());
     }
 }

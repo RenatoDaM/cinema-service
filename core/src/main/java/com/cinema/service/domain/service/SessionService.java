@@ -26,7 +26,6 @@ import java.util.List;
 public class SessionService {
     private final SessionRepository sessionRepository;
     private final RoomService roomService;
-    private final MovieService movieService;
     private final MovieRepository movieRepository;
 
     @Value("${cinema.max-session-hours}")
@@ -106,10 +105,10 @@ public class SessionService {
             throw new IllegalArgumentException("session has exceeded the time limit. if this is intentional and not an error, please contact the administrator");
         }
 
-        LocalDateTime sessionTimePlusMinimum = session.getSessionStartTime().plusMinutes(minimumSessionMinutes);
+        LocalDateTime sessionStartTimePlusMinimumAllowed = session.getSessionStartTime().plusMinutes(minimumSessionMinutes);
 
-        Boolean lessThanMinimumSessionTimeAllowed = sessionEndTime.isBefore(sessionTimePlusMinimum);
-        if (lessThanMinimumSessionTimeAllowed) {
+        Boolean isSessionTimeBelowMinimum = sessionEndTime.isBefore(sessionStartTimePlusMinimumAllowed);
+        if (isSessionTimeBelowMinimum) {
             throw new IllegalArgumentException("session duration is less than the minimum required. please ensure the session duration is at least 10 minutes");
         }
     }

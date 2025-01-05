@@ -10,3 +10,5 @@ rootProject.name = 'service'
 include 'core'
 include 'disk-storage-image-provider'
 include 'common'
+include 'simple-storage-image-provider'
+

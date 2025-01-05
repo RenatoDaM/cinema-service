@@ -7,6 +7,7 @@ plugins {
 dependencies {
     implementation(project(":common"))
     implementation(project(":disk-storage-image-provider"))
+    implementation(project(":simple-storage-image-provider"))
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
 }
