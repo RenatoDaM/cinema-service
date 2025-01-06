@@ -32,3 +32,4 @@ cinema:
   movie-image-upload-directory: "core/src/main/resources/static/images/movies/"
   s3-bucket-name: "cinema-service-movie-images"
   aws-region: "US_EAST_2"
+  image-generator: "openai"

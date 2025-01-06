@@ -1,4 +1,4 @@
-package com.cinema.image.config;
+package com.cinema.config;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;

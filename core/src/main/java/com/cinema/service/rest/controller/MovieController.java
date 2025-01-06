@@ -1,5 +1,6 @@
 package com.cinema.service.rest.controller;
 
+import com.cinema.service.domain.service.ImageService;
 import com.cinema.service.rest.dto.request.MovieCreateRequest;
 import com.cinema.service.rest.dto.response.MovieListResponse;
 import com.cinema.service.domain.service.MovieService;
@@ -29,6 +30,7 @@ import java.net.URI;
 @Validated
 public class MovieController {
     private final MovieService movieService;
+    private final ImageService imageService;
 
     @GetMapping(
             value = "/{movieId}/image",
@@ -81,5 +83,10 @@ public class MovieController {
     ) throws IOException {
         movieService.deleteMovie(movieId);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/generate-image")
+    public @ResponseBody byte[] createAIGeneratedImage() {
+        return imageService.generateAIImage();
     }
 }

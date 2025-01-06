@@ -1,11 +1,11 @@
-package com.cinema.image.impl;
+package com.cinema.service;
 
 
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.cinema.exception.MovieImageNotFoundException;
-import com.cinema.image.ImageProvider;
+import com.cinema.interfaces.ImageProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -18,7 +18,7 @@ import com.amazonaws.services.s3.AmazonS3;
 
 @Component
 @ConditionalOnProperty(name = "cinema.image-provider", havingValue = "simple-storage")
-@ComponentScan(basePackages = {"com.cinema.image.config"})
+@ComponentScan(basePackages = {"com.cinema.config"})
 @RequiredArgsConstructor
 public class SimpleStorageImageProvider implements ImageProvider {
 
@@ -27,7 +27,6 @@ public class SimpleStorageImageProvider implements ImageProvider {
     @Value("${cinema.s3-bucket-name}")
     public String BUCKET_NAME;
 
-    // save as jfif for some reason, probably because the conversion from multipartfile
     @Override
     public String saveImage(String imageIdentifier, MultipartFile imageFile) throws IOException {
         ObjectMetadata metadata = new ObjectMetadata();
@@ -56,6 +55,7 @@ public class SimpleStorageImageProvider implements ImageProvider {
             if (e.getStatusCode() == 404) {
                 throw new MovieImageNotFoundException("Image not found in the image provider", e);
             }
+            throw e;
         }
 
         return imageBytes;

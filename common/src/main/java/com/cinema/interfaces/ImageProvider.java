@@ -1,4 +1,4 @@
-package com.cinema.image;
+package com.cinema.interfaces;
 
 import org.springframework.web.multipart.MultipartFile;
 
