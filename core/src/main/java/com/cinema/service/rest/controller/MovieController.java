@@ -1,5 +1,7 @@
 package com.cinema.service.rest.controller;
 
+import com.cinema.dto.AIGeneratedImageResponse;
+import com.cinema.dto.AIImagePrompt;
 import com.cinema.service.domain.service.ImageService;
 import com.cinema.service.rest.dto.request.MovieCreateRequest;
 import com.cinema.service.rest.dto.response.MovieListResponse;
@@ -86,7 +88,7 @@ public class MovieController {
     }
 
     @PostMapping("/generate-image")
-    public @ResponseBody byte[] createAIGeneratedImage() {
-        return imageService.generateAIImage();
+    public ResponseEntity<AIGeneratedImageResponse> createAIGeneratedImage(@RequestBody AIImagePrompt imagePrompt) {
+        return ResponseEntity.status(201).body(imageService.generateAIImage(imagePrompt));
     }
 }

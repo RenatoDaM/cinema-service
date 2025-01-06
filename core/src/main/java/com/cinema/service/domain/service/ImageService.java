@@ -1,5 +1,7 @@
 package com.cinema.service.domain.service;
 
+import com.cinema.dto.AIGeneratedImageResponse;
+import com.cinema.dto.AIImagePrompt;
 import com.cinema.interfaces.ImageGenerator;
 import com.cinema.interfaces.ImageProvider;
 import lombok.RequiredArgsConstructor;
@@ -39,7 +41,7 @@ public class ImageService {
         imageProvider.deleteImage(imageIdentifier);
     }
 
-    public byte[] generateAIImage() {
-        return imageGenerator.generateImage("dall-e-3", "a white siamese cat", 1024, 1024, 1);
+    public AIGeneratedImageResponse generateAIImage(AIImagePrompt imagePrompt) {
+        return imageGenerator.generateImage(imagePrompt);
     }
 }

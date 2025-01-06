@@ -3,6 +3,7 @@ package com.cinema.service.rest.error.handler;
 import com.amazonaws.AmazonServiceException;
 import com.cinema.service.rest.error.ErrorResponse;
 import com.cinema.exception.MovieImageNotFoundException;
+import jakarta.validation.ConstraintViolationException;
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +16,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
@@ -86,5 +89,25 @@ public class RestResponseControllerAdvice {
                 );
         log.error(generalErrorMessage, ex);
         return new ResponseEntity<>(error, new HttpHeaders(), HttpStatus.valueOf(ex.getStatusCode()));
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<ErrorResponse> handleValidationErrors(ConstraintViolationException ex) {
+        List<String> details = ex.getConstraintViolations().stream().map(constraintViolation -> constraintViolation.getMessage()).toList();
+        ErrorResponse error =
+                new ErrorResponse(
+                        LocalDateTime.now(),
+                        400,
+                        "Constraint violation exception",
+                        details
+                );
+
+        return new ResponseEntity<>(error, new HttpHeaders(), HttpStatus.BAD_REQUEST);
+    }
+
+    private Map<String, List<String>> getErrorsMap(List<String> errors) {
+        Map<String, List<String>> errorResponse = new HashMap<>();
+        errorResponse.put("errors", errors);
+        return errorResponse;
     }
 }
