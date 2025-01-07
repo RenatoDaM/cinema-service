@@ -55,17 +55,24 @@ public class RestResponseControllerAdvice {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorResponse> handleValidationErrors(MethodArgumentNotValidException ex) {
-        List<String> errors = ex.getBindingResult().getFieldErrors()
-                .stream().map(FieldError::getDefaultMessage).collect(Collectors.toList());
-        ErrorResponse error =
-                new ErrorResponse(
-                        LocalDateTime.now(),
-                        HttpStatus.BAD_REQUEST.value(),
-                        "validation error",
-                        errors
-                );
-        return new ResponseEntity<>(error, new HttpHeaders(), HttpStatus.BAD_REQUEST);
+    public ProblemDetail handleValidationErrors(MethodArgumentNotValidException ex, WebRequest request) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "The request was processed, but one or more fields contain invalid values.");
+        problemDetail.setTitle("Validation error");
+        problemDetail.setInstance(URI.create(((ServletWebRequest) request).getRequest().getRequestURI()));
+
+        List<Map<String, String>> errorDetails = new ArrayList<>();
+
+        for (FieldError fieldError : ex.getBindingResult().getFieldErrors()) {
+            String pointer = fieldError.getField();
+            String errorMessage = fieldError.getDefaultMessage();
+            Map<String, String> errorDetail = new HashMap<>();
+            errorDetail.put("pointer", pointer);
+            errorDetail.put("error", errorMessage);
+            errorDetails.add(errorDetail);
+        }
+
+        problemDetail.setProperty("errors", errorDetails);
+        return problemDetail;
     }
 
     @ExceptionHandler(MovieImageNotFoundException.class)
@@ -98,7 +105,7 @@ public class RestResponseControllerAdvice {
     @ExceptionHandler(ConstraintViolationException.class)
     public ProblemDetail handleInvalidInputException(ConstraintViolationException e, WebRequest request) {
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "the request was processed, but one or more fields contain invalid values");
-        problemDetail.setTitle("constraint violation");
+        problemDetail.setTitle("Validation error");
         problemDetail.setInstance(URI.create(((ServletWebRequest) request).getRequest().getRequestURI()));
 
         List<Map<String, String>> errorDetails = new ArrayList<>();

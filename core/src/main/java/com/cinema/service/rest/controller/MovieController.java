@@ -7,6 +7,7 @@ import com.cinema.service.rest.dto.request.MovieCreateRequest;
 import com.cinema.service.rest.dto.response.MovieListResponse;
 import com.cinema.service.domain.service.MovieService;
 import com.cinema.service.rest.dto.response.MovieResponse;
+import jakarta.validation.Valid;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
@@ -88,7 +89,7 @@ public class MovieController {
     }
 
     @PostMapping("/generate-image")
-    public ResponseEntity<AIGeneratedImageResponse> createAIGeneratedImage(@RequestBody AIImagePrompt imagePrompt) {
+    public ResponseEntity<AIGeneratedImageResponse> createAIGeneratedImage(@Valid @RequestBody AIImagePrompt imagePrompt) {
         return ResponseEntity.status(201).body(imageService.generateAIImage(imagePrompt));
     }
 }
