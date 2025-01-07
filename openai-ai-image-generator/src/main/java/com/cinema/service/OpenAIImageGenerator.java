@@ -5,6 +5,7 @@ import com.cinema.dto.AIGeneratedImageResponse;
 import com.cinema.dto.AIImagePrompt;
 import com.cinema.dto.DALLERequest;
 import com.cinema.dto.DALLEResponse;
+import com.cinema.enums.DALLEModelEnum;
 import com.cinema.interfaces.ImageGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

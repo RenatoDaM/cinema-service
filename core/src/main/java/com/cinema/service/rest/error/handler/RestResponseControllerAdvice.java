@@ -3,22 +3,26 @@ package com.cinema.service.rest.error.handler;
 import com.amazonaws.AmazonServiceException;
 import com.cinema.service.rest.error.ErrorResponse;
 import com.cinema.exception.MovieImageNotFoundException;
+import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Path;
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
+
+import java.net.URI;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
@@ -92,22 +96,37 @@ public class RestResponseControllerAdvice {
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<ErrorResponse> handleValidationErrors(ConstraintViolationException ex) {
-        List<String> details = ex.getConstraintViolations().stream().map(constraintViolation -> constraintViolation.getMessage()).toList();
-        ErrorResponse error =
-                new ErrorResponse(
-                        LocalDateTime.now(),
-                        400,
-                        "Constraint violation exception",
-                        details
-                );
+    public ProblemDetail handleInvalidInputException(ConstraintViolationException e, WebRequest request) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "the request was processed, but one or more fields contain invalid values");
+        problemDetail.setTitle("constraint violation");
+        problemDetail.setInstance(URI.create(((ServletWebRequest) request).getRequest().getRequestURI()));
 
-        return new ResponseEntity<>(error, new HttpHeaders(), HttpStatus.BAD_REQUEST);
+        List<Map<String, String>> errorDetails = new ArrayList<>();
+
+        for (ConstraintViolation<?> violation : e.getConstraintViolations()) {
+            String pointer = getPointer(violation.getPropertyPath());
+            String errorMessage = violation.getMessage();
+
+            Map<String, String> errorDetail = new HashMap<>();
+            errorDetail.put("pointer", pointer);
+            errorDetail.put("error", errorMessage);
+
+            errorDetails.add(errorDetail);
+        }
+
+        problemDetail.setProperty("errors", errorDetails);
+        return problemDetail;
     }
 
-    private Map<String, List<String>> getErrorsMap(List<String> errors) {
-        Map<String, List<String>> errorResponse = new HashMap<>();
-        errorResponse.put("errors", errors);
-        return errorResponse;
+    private String getPointer(Path propertyPath) {
+        Iterator<Path.Node> iterator = propertyPath.iterator();
+        String lastPart = null;
+
+        while (iterator.hasNext()) {
+            lastPart = iterator.next().getName();
+        }
+
+        return lastPart != null ? lastPart : "";
     }
+
 }
