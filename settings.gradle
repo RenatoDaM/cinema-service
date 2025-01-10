@@ -11,4 +11,5 @@ include 'core'
 include 'disk-storage-image-provider'
 include 'common'
 include 'simple-storage-image-provider'
+include 'openai-ai-image-generator'
 

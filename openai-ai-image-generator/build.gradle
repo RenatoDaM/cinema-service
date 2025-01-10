@@ -2,13 +2,15 @@ plugins {
     id 'java'
 }
 
+group = 'com.cinema'
+version = '0.0.1-SNAPSHOT'
 
+repositories {
+    mavenCentral()
+}
 
 dependencies {
     implementation(project(":common"))
-    implementation(project(":disk-storage-image-provider"))
-    implementation(project(":simple-storage-image-provider"))
-    implementation(project(":openai-ai-image-generator"))
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
 }

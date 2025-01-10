@@ -1,6 +1,6 @@
-package com.cinema.image.impl;
+package com.cinema.service;
 
-import com.cinema.image.ImageProvider;
+import com.cinema.interfaces.ImageProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;

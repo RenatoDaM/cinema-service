@@ -1,6 +1,9 @@
 package com.cinema.service.domain.service;
 
-import com.cinema.image.ImageProvider;
+import com.cinema.dto.AIGeneratedImageResponse;
+import com.cinema.dto.AIImagePrompt;
+import com.cinema.interfaces.ImageGenerator;
+import com.cinema.interfaces.ImageProvider;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,10 +16,12 @@ import static com.cinema.service.domain.util.MultipartFileValidator.validateImag
 
 @Service
 @RequiredArgsConstructor
-@ComponentScan(basePackages = {"com.cinema.image.impl"})
+@ComponentScan(basePackages = {"com.cinema.service"})
 public class ImageService {
 
     private final ImageProvider imageProvider;
+
+    private final ImageGenerator imageGenerator;
 
     private final Logger log = LoggerFactory.getLogger(ImageService.class);
 
@@ -34,5 +39,9 @@ public class ImageService {
     public void deleteImage(String imageIdentifier) throws IOException {
         log.info("Deleting image {}", imageIdentifier);
         imageProvider.deleteImage(imageIdentifier);
+    }
+
+    public AIGeneratedImageResponse generateAIImage(AIImagePrompt imagePrompt) {
+        return imageGenerator.generateImage(imagePrompt);
     }
 }

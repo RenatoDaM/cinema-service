@@ -51,6 +51,8 @@ subprojects {
         implementation 'org.apache.tika:tika-core:3.0.0'
         implementation 'org.postgresql:postgresql:42.7.4'
         implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.18.2'
+        implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+        implementation 'io.github.openfeign:feign-okhttp:13.2.1'
         testImplementation 'org.springframework.amqp:spring-rabbit-test'
         implementation 'org.springframework.boot:spring-boot-starter-web'
         implementation 'org.mapstruct:mapstruct:1.5.5.Final'
