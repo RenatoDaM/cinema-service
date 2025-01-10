@@ -1,6 +1,7 @@
-package com.cinema.dataproviders.client.openai;
+package com.cinema.dataproviders.imagegenerators.openai;
 
 import com.cinema.core.common.interfaces.ImageGenerator;
+import com.cinema.dataproviders.client.openai.OpenAIClient;
 import com.cinema.dataproviders.client.openai.dto.DALLERequest;
 import com.cinema.dataproviders.client.openai.dto.DALLEResponse;
 import com.cinema.entrypoints.api.dto.request.AIImagePrompt;
