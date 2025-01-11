@@ -25,34 +25,22 @@ allprojects {
     }
 }
 
-subprojects {
-    apply plugin: 'java'
-    apply plugin: 'io.spring.dependency-management'
-    apply plugin: 'org.springframework.boot'
-
-    group = 'com.cinema'
-    version = '0.0.1-SNAPSHOT'
-
-    sourceCompatibility = '21'
-
-    ext {
-        set('springCloudVersion', "2023.0.1")
-    }
 
     dependencies {
         implementation 'org.springframework.boot:spring-boot-starter-amqp'
         implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-        implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+        implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:4.1.2'
         implementation 'org.springframework.amqp:spring-amqp:3.1.4'
         implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0'
+        implementation 'io.github.openfeign:feign-okhttp:13.2.1'
         implementation 'org.springframework.boot:spring-boot-starter-validation:3.3.0'
         implementation 'org.liquibase:liquibase-core:4.30.0'
         implementation 'io.awspring.cloud:spring-cloud-starter-aws-secrets-manager-config:2.4.4'
         implementation 'org.apache.tika:tika-core:3.0.0'
         implementation 'org.postgresql:postgresql:42.7.4'
         implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.18.2'
-        implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
-        implementation 'io.github.openfeign:feign-okhttp:13.2.1'
+        implementation 'com.amazonaws:aws-java-sdk-s3:1.12.760'
+        implementation 'software.amazon.awssdk:s3:2.24.9'
         testImplementation 'org.springframework.amqp:spring-rabbit-test'
         implementation 'org.springframework.boot:spring-boot-starter-web'
         implementation 'org.mapstruct:mapstruct:1.5.5.Final'
@@ -63,16 +51,10 @@ subprojects {
         testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     }
 
-    dependencyManagement {
-        imports {
-            mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-        }
-    }
-
-    tasks.named('test') {
-        useJUnitPlatform()
-    }
+tasks.named('test') {
+    useJUnitPlatform()
 }
+
 
 bootJar {
     mainClass = 'com.cinema.service.ServiceApplication'
