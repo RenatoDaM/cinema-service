@@ -7,6 +7,7 @@ import com.cinema.dataproviders.client.openai.dto.DALLEResponse;
 import com.cinema.entrypoints.api.dto.request.AIImagePrompt;
 import com.cinema.entrypoints.api.dto.response.AIGeneratedImageResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
@@ -18,14 +19,14 @@ import java.util.stream.Collectors;
 @ConditionalOnProperty(name = "cinema.image-generator", havingValue = "openai")
 public class OpenAIImageGenerator implements ImageGenerator {
 
-    private final String OPEN_AI_TOKEN = "Bearer ";
-
+    @Value("${openai-api-key}")
+    private String apiKey;
     private final OpenAIClient openAIClient;
 
     @Override
     public AIGeneratedImageResponse generateImage(AIImagePrompt imagePrompt) {
         DALLEResponse dalleResponse =
-                openAIClient.generateImage(OPEN_AI_TOKEN, new DALLERequest(imagePrompt.getModel(), imagePrompt.getPrompt(), imagePrompt.getN(), imagePrompt.getResolution()));
+                openAIClient.generateImage(apiKey, new DALLERequest(imagePrompt.getModel(), imagePrompt.getPrompt(), imagePrompt.getN(), imagePrompt.getResolution()));
 
         List<AIGeneratedImageResponse.Data> imageDataList = dalleResponse.getData().stream()
                 .map(data -> {
