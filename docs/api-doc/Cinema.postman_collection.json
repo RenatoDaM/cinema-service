@@ -2,7 +2,7 @@
 	"info": {
 		"_postman_id": "e7d5e661-5846-4f6c-95ea-b822d6d14cea",
 		"name": "Cinema",
-		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "23766790"
 	},
 	"item": [
@@ -29,7 +29,19 @@
 										}
 									}
 								},
-								"url": "http://localhost:8080/api/cinema/sessions"
+								"url": {
+									"raw": "http://localhost:8080/api/cinema/sessions",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"cinema",
+										"sessions"
+									]
+								}
 							},
 							"response": []
 						},
@@ -180,7 +192,19 @@
 										}
 									}
 								},
-								"url": "http://localhost:8080/api/cinema/movies"
+								"url": {
+									"raw": "http://localhost:8080/api/cinema/movies",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"cinema",
+										"movies"
+									]
+								}
 							},
 							"response": []
 						},
@@ -198,7 +222,19 @@
 										}
 									}
 								},
-								"url": "http://localhost:8080/api/cinema/movies"
+								"url": {
+									"raw": "http://localhost:8080/api/cinema/movies",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"cinema",
+										"movies"
+									]
+								}
 							},
 							"response": []
 						},
@@ -260,7 +296,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8080/api/cinema/movies/get-image/:movieId",
+									"raw": "http://localhost:8080/api/cinema/movies/:movieId/image",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -270,8 +306,8 @@
 										"api",
 										"cinema",
 										"movies",
-										"get-image",
-										":movieId"
+										":movieId",
+										"image"
 									],
 									"query": [
 										{
@@ -344,7 +380,19 @@
 								}
 							}
 						},
-						"url": "http://localhost:8080/api/cinema/tickets"
+						"url": {
+							"raw": "http://localhost:8080/api/cinema/tickets",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"cinema",
+								"tickets"
+							]
+						}
 					},
 					"response": []
 				}
@@ -354,320 +402,427 @@
 			"name": "cinema-service",
 			"item": [
 				{
-					"name": "Create Session",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"sessionStartTime\": \"2024-06-27T20:30:00\",\r\n  \"sessionEndTime\": \"2024-06-27T21:30:00\",\r\n  \"basePrice\": 5\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:8081/sessions/movies/:movieId/rooms/:roomId",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8081",
-							"path": [
-								"sessions",
-								"movies",
-								":movieId",
-								"rooms",
-								":roomId"
-							],
-							"variable": [
-								{
-									"key": "movieId",
-									"value": "1"
+					"name": "movie-image",
+					"item": [
+						{
+							"name": "Get movie image",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
 								},
-								{
-									"key": "roomId",
-									"value": "1"
+								"url": {
+									"raw": "http://localhost:8081/movies/:movieId/image",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8081",
+									"path": [
+										"movies",
+										":movieId",
+										"image"
+									],
+									"query": [
+										{
+											"key": "movieId",
+											"value": null,
+											"disabled": true
+										}
+									],
+									"variable": [
+										{
+											"key": "movieId",
+											"value": "8"
+										}
+									]
 								}
-							]
+							},
+							"response": []
+						},
+						{
+							"name": "Save movie image",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "movieImage",
+											"type": "file",
+											"src": "/C:/Users/Renato/Downloads/iguana.jpg"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:8081/movies/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8081",
+									"path": [
+										"movies",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Generate AI Image",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "movieImage",
+											"type": "file",
+											"src": "/C:/Users/Renato/Downloads/iguana.jpg"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:8081/movies/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8081",
+									"path": [
+										"movies",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"response": []
 						}
-					},
-					"response": []
+					]
 				},
 				{
-					"name": "Create Movie",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Example Movie\",\r\n  \"synopsis\": \"A thrilling adventure in a mysterious land.\",\r\n  \"ageGroup\": 13,\r\n  \"category\": \"Adventure\",\r\n  \"releaseDate\": \"2024-05-30\",\r\n  \"duration\": \"02:30:33\",\r\n  \"director\": \"John Doe\",\r\n  \"movieCast\": \"Jane Smith, Tom Johnson, Alice Brown\",\r\n  \"producer\": \"ABC Productions\"\r\n}\r\n",
-							"options": {
-								"raw": {
-									"language": "json"
+					"name": "sessions",
+					"item": [
+						{
+							"name": "Create Session",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"sessionStartTime\": \"2024-06-27T20:30:00\",\r\n  \"sessionEndTime\": \"2024-06-27T21:30:00\",\r\n  \"basePrice\": 5\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8081/sessions/movies/:movieId/rooms/:roomId",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8081",
+									"path": [
+										"sessions",
+										"movies",
+										":movieId",
+										"rooms",
+										":roomId"
+									],
+									"variable": [
+										{
+											"key": "movieId",
+											"value": "1"
+										},
+										{
+											"key": "roomId",
+											"value": "1"
+										}
+									]
 								}
-							}
+							},
+							"response": []
 						},
-						"url": "http://localhost:8081/movies"
-					},
-					"response": []
-				},
-				{
-					"name": "Get Session by id",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
+						{
+							"name": "Get Sessions",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8081/sessions",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8081",
+									"path": [
+										"sessions"
+									]
 								}
-							}
+							},
+							"response": []
 						},
-						"url": {
-							"raw": "http://localhost:8081/sessions/:sessionId",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8081",
-							"path": [
-								"sessions",
-								":sessionId"
-							],
-							"variable": [
-								{
-									"key": "sessionId",
-									"value": "1"
+						{
+							"name": "Get Session by id",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8081/sessions/:sessionId",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8081",
+									"path": [
+										"sessions",
+										":sessionId"
+									],
+									"variable": [
+										{
+											"key": "sessionId",
+											"value": "1"
+										}
+									]
 								}
-							]
+							},
+							"response": []
+						},
+						{
+							"name": "Get Sessions by movie id",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8081/sessions/movies/:movieId",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8081",
+									"path": [
+										"sessions",
+										"movies",
+										":movieId"
+									],
+									"variable": [
+										{
+											"key": "movieId",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
 						}
-					},
-					"response": []
+					]
 				},
 				{
-					"name": "Get Sessions",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
+					"name": "movies",
+					"item": [
+						{
+							"name": "Create Movie",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": \"Example Movie\",\r\n  \"synopsis\": \"A thrilling adventure in a mysterious land.\",\r\n  \"ageGroup\": 13,\r\n  \"category\": \"Adventure\",\r\n  \"releaseDate\": \"2024-05-30\",\r\n  \"duration\": \"02:30:33\",\r\n  \"director\": \"John Doe\",\r\n  \"movieCast\": \"Jane Smith, Tom Johnson, Alice Brown\",\r\n  \"producer\": \"ABC Productions\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8081/movies",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8081",
+									"path": [
+										"movies"
+									]
 								}
-							}
+							},
+							"response": []
 						},
-						"url": "http://localhost:8081/sessions"
-					},
-					"response": []
-				},
-				{
-					"name": "Get Sessions by movie id",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
+						{
+							"name": "Get Movies",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8081/movies",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8081",
+									"path": [
+										"movies"
+									],
+									"query": [
+										{
+											"key": "movieId",
+											"value": null,
+											"disabled": true
+										}
+									]
 								}
-							}
+							},
+							"response": []
 						},
-						"url": {
-							"raw": "http://localhost:8081/sessions/movies/:movieId",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8081",
-							"path": [
-								"sessions",
-								"movies",
-								":movieId"
-							],
-							"variable": [
-								{
-									"key": "movieId",
-									"value": "1"
+						{
+							"name": "Get Movie By ID",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8081/movies/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8081",
+									"path": [
+										"movies",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1"
+										}
+									]
 								}
-							]
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Movie",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "movieImage",
+											"type": "file",
+											"src": "/C:/Users/Renato/Downloads/iguana.jpg"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:8081/movies/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8081",
+									"path": [
+										"movies",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"response": []
 						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get movie image",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:8081/movies/get-image/:movieId",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8081",
-							"path": [
-								"movies",
-								"get-image",
-								":movieId"
-							],
-							"query": [
-								{
-									"key": "movieId",
-									"value": null,
-									"disabled": true
-								}
-							],
-							"variable": [
-								{
-									"key": "movieId",
-									"value": "2"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Movies",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:8081/movies",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8081",
-							"path": [
-								"movies"
-							],
-							"query": [
-								{
-									"key": "movieId",
-									"value": null,
-									"disabled": true
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Movie By ID",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:8081/movies/:id",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8081",
-							"path": [
-								"movies",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "1"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Save movie image",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "movieImage",
-									"type": "file",
-									"src": "/C:/Users/Renato/Downloads/green-iguana.jpg"
-								}
-							]
-						},
-						"url": {
-							"raw": "http://localhost:8081/movies/:id",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8081",
-							"path": [
-								"movies",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "2"
-								}
-							]
-						}
-					},
-					"response": []
+					]
 				}
 			]
 		}

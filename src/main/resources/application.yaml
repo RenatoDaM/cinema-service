@@ -30,7 +30,7 @@ cinema:
   max-session-hours: 5
   min-session-minutes: 10
   image-provider: "simple-storage"
-  movie-image-upload-directory: "core/src/main/resources/static/images/movies/"
+  movie-image-upload-directory: "src/main/resources/static/images/movies/"
   s3-bucket-name: "cinema-service-movie-images"
   aws-region: "US_EAST_2"
   image-generator: "openai"
